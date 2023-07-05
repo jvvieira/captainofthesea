@@ -16,6 +16,7 @@ resource "aws_db_instance" "captainoftheseas" {
   storage_encrypted   = false
   publicly_accessible = false
   apply_immediately   = true
+  multi_az            = false
 
   password = jsondecode(data.aws_secretsmanager_secret_version.current.secret_string)["password"]
   username = jsondecode(data.aws_secretsmanager_secret_version.current.secret_string)["username"]
