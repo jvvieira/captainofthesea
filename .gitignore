@@ -5,3 +5,4 @@ infra/terraform.tfstate
 infra/terraform.tfstate.backup
 terraform.tfstate
 .python-version
+**__pycache__**
