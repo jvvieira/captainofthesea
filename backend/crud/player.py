@@ -5,13 +5,13 @@ from sqlalchemy.sql import functions as sqlalchemy_functions
 
 from backend.crud.base import BaseCRUDRepository
 
-from backend.models.db.player import Player
+from backend.models.db.player import PlayerModel
 from backend.models.schemas.player import PlayerInCreate
 
 
 class PlayerCRUDRepository(BaseCRUDRepository):
-    async def create(self, player_create: PlayerInCreate) -> Player:
-        new_player = Player(username=player_create.name)
+    async def create(self, player_create: PlayerInCreate) -> PlayerModel:
+        new_player = PlayerModel(**player_create)
 
         self.async_session.add(instance=new_player)
         await self.async_session.commit()
@@ -19,13 +19,13 @@ class PlayerCRUDRepository(BaseCRUDRepository):
 
         return new_player
 
-    async def read_all(self) -> typing.Sequence[Player]:
-        stmt = sqlalchemy.select(Player)
+    async def read_all(self) -> typing.Sequence[PlayerModel]:
+        stmt = sqlalchemy.select(PlayerModel)
         query = await self.async_session.execute(statement=stmt)
         return query.scalars().all()
 
-    async def read_by_id(self, id: int) -> Player:
-        stmt = sqlalchemy.select(Player).where(Player.id == id)
+    async def read_by_id(self, id: int) -> PlayerModel:
+        stmt = sqlalchemy.select(PlayerModel).where(PlayerModel.id == id)
         query = await self.async_session.execute(statement=stmt)
 
         return query.scalar()  # type: ignore

@@ -1,11 +1,26 @@
-import typing
+import datetime
 
-import sqlalchemy
-from sqlalchemy.orm import DeclarativeBase
-
-
-class DBTable(DeclarativeBase):
-    metadata: sqlalchemy.MetaData = sqlalchemy.MetaData()  # type: ignore
+from sqlmodel import Field, SQLModel
+from sqlalchemy import text
+from typing import Optional
 
 
-Base: typing.Type[DeclarativeBase] = DBTable
+class BaseDBModel(SQLModel):
+    id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class TrackingModel(SQLModel):
+    created_at: datetime = Field(
+        default_factory=datetime.utcnow,
+        nullable=False,
+        sa_column_kwargs={"server_default": text("current_timestamp(0)")},
+    )
+
+    updated_at: datetime = Field(
+        default_factory=datetime.utcnow,
+        nullable=False,
+        sa_column_kwargs={
+            "server_default": text("current_timestamp(0)"),
+            "onupdate": text("current_timestamp(0)"),
+        },
+    )
