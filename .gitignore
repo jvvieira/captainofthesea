@@ -6,3 +6,4 @@ infra/terraform.tfstate.backup
 terraform.tfstate
 .python-version
 **__pycache__**
+.vscode/*
