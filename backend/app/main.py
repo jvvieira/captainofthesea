@@ -11,7 +11,7 @@ def initialize_backend_application() -> fastapi.FastAPI:
     app = fastapi.FastAPI(
         title=settings.TITLE,
         version=settings.VERSION,
-        description="API",
+        description=settings.DESCRIPTION + " " + settings.ENVIRONMENT,
         openapi_url=settings.OPENAPI_URL,
     )
 

@@ -1,6 +1,6 @@
 import datetime
 
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field
 
 from app.repository.table import BaseDBModel, TrackingModel
 

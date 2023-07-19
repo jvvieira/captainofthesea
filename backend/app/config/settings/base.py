@@ -12,6 +12,7 @@ ROOT_DIR: pathlib.Path = pathlib.Path(
 
 class Settings(BaseSettings):
     TITLE: str = "Captain of the Sea"
+    DESCRIPTION: str = "Captain of the sea backend"
     VERSION: str = "0.1.0"
     API_PREFIX: str = "/api"
     DOCS_URL: str = "/docs"
