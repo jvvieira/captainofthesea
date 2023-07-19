@@ -6,8 +6,8 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from alembic import context
 
-from app.config.manager import settings
-
+from app.config.settings.base import settings
+from app.repository.database import async_engine
 from app.models.db import *
 
 
@@ -76,13 +76,11 @@ async def run_async_migrations() -> None:
     #     prefix="sqlalchemy.",
     #     poolclass=pool.NullPool,
     # )
-    connectable = AsyncSession(
-        create_engine(settings.DB_POSTGRES_URI, echo=True, future=True)
-    )
-    async with connectable.connect() as connection:
+
+    async with async_engine.connect() as connection:
         await connection.run_sync(do_run_migrations)
 
-    await connectable.dispose()
+    await async_engine.dispose()
 
 
 def run_migrations_online() -> None:

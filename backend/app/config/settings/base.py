@@ -21,10 +21,10 @@ class Settings(BaseSettings):
     ENVIRONMENT: Environment = Environment.DEVELOPMENT
 
     DB_POSTGRES_HOST: str
-    DB_POSTGRES_NAME: str
     DB_POSTGRES_PASSWORD: SecretStr
     DB_POSTGRES_PORT: int
     DB_POSTGRES_USENRAME: str
+    DB_POSTGRES_SCHEMA: str
 
     DB_POSTGRES_URI: Optional[PostgresDsn] = None
 
@@ -43,7 +43,7 @@ class Settings(BaseSettings):
             password=password.get_secret_value(),
             host=values.get("DB_POSTGRES_HOST"),
             port=values.get("DB_POSTGRES_PORT"),
-            db=values.get("DB_POSTGRES_NAME"),
+            db=values.get("DB_POSTGRES_SCHEMA"),
         )
 
     class Config:
