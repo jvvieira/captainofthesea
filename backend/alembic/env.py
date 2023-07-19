@@ -6,9 +6,9 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from alembic import context
 
-from backend.config.manager import settings
+from app.config.manager import settings
 
-from backend.models.db import *
+from app.models.db import *
 
 
 # this is the Alembic Config object, which provides

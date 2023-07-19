@@ -3,15 +3,15 @@ import typing
 import sqlalchemy
 from sqlalchemy.sql import functions as sqlalchemy_functions
 
-from backend.crud.base import BaseCRUDRepository
+from app.crud.base import BaseCRUDRepository
 
-from backend.models.db.player import PlayerModel
-from backend.models.schemas.player import PlayerInCreate
+from app.models.db.player import PlayerModel
+from app.models.schemas.player import PlayerInCreate
 
 
 class PlayerCRUDRepository(BaseCRUDRepository):
     async def create(self, player_create: PlayerInCreate) -> PlayerModel:
-        new_player = PlayerModel(**player_create)
+        new_player = PlayerModel(**player_create.dict())
 
         self.async_session.add(instance=new_player)
         await self.async_session.commit()

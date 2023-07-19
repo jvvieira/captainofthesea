@@ -2,7 +2,7 @@ import datetime
 
 from sqlmodel import Field, SQLModel
 
-from backend.repository.table import BaseDBModel, TrackingModel
+from app.repository.table import BaseDBModel, TrackingModel
 
 
 class PlayerBase(BaseDBModel):

@@ -1,13 +1,13 @@
 import fastapi
 
-from backend.api.dependencies.repository import get_repository
-from backend.models.schemas.player import PlayerInCreate, PlayerResponse
-from backend.crud.player import PlayerCRUDRepository
+from app.api.dependencies.repository import get_repository
+from app.models.schemas.player import PlayerInCreate, PlayerResponse
+from app.crud.player import PlayerCRUDRepository
 
-router = fastapi.APIRouter(prefix="/player", tags=["player"])
+player_router = fastapi.APIRouter(prefix="/player", tags=["player"])
 
 
-@router.post(
+@player_router.post(
     "/create",
     name="player:create",
     response_model=PlayerResponse,

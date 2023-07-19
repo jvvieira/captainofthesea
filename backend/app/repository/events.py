@@ -5,8 +5,8 @@ from sqlalchemy.dialects.postgresql.asyncpg import AsyncAdapt_asyncpg_connection
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncSessionTransaction
 from sqlalchemy.pool.base import _ConnectionRecord
 
-from backend.repository.database import async_db
-from backend.repository.table import Base
+from app.repository.database import async_db
+from app.repository.table import Base
 
 
 @event.listens_for(target=async_db.async_engine.sync_engine, identifier="connect")

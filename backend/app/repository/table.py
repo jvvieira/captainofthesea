@@ -1,5 +1,4 @@
-import datetime
-
+from datetime import datetime
 from sqlmodel import Field, SQLModel
 from sqlalchemy import text
 from typing import Optional

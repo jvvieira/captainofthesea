@@ -2,7 +2,7 @@ import datetime
 
 import pydantic
 
-from backend.models.schemas.base import BaseSchemaModel
+from app.models.schemas.base import BaseSchemaModel
 
 
 class PlayerInCreate(BaseSchemaModel):
