@@ -13,6 +13,8 @@ services:
       - 5432:5432
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
+    networks:
+      - default
 
   pgadmin:
     image: dpage/pgadmin4
@@ -25,22 +27,24 @@ services:
     env_file:
       - .env
 
-  # backend_app:
-  #   container_name: backend_app
-  #   restart: always
-  #   build:
-  #     dockerfile: Dockerfile
-  #     context: ./backend/
-  #   environment:
-  #     - ENVIRONMENT=${ENVIRONMENT}
-  #   volumes:
-  #     - ./backend/:/usr/backend/
-  #   expose:
-  #     - 8000
-  #   ports:
-  #     - 8001:8000
-  #   depends_on:
-  #     - db
+  backend_app:
+    container_name: backend_app
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./backend/
+    env_file:
+      - .env
+    volumes:
+      - ./backend/app/:/backend/app
+    expose:
+      - 8000
+    ports:
+      - 8001:8000
+    depends_on:
+      - db
+    networks:
+      - default
 
 volumes:
   app-db-data:

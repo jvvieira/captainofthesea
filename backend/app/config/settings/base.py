@@ -21,11 +21,11 @@ class Settings(BaseSettings):
     OPENAPI_PREFIX: str = ""
     ENVIRONMENT: Environment = Environment.DEVELOPMENT
 
-    DB_POSTGRES_HOST: str
-    DB_POSTGRES_PASSWORD: SecretStr
-    DB_POSTGRES_PORT: int
-    DB_POSTGRES_USENRAME: str
-    DB_POSTGRES_SCHEMA: str
+    POSTGRES_HOST: str
+    POSTGRES_PASSWORD: SecretStr
+    POSTGRES_PORT: int
+    POSTGRES_USER: str
+    POSTGRES_DB: str
 
     DB_POSTGRES_URI: Optional[PostgresDsn] = None
 
@@ -36,15 +36,15 @@ class Settings(BaseSettings):
         if isinstance(v, str):
             return v
 
-        password: SecretStr = values.get("DB_POSTGRES_PASSWORD", SecretStr(""))
+        password: SecretStr = values.get("POSTGRES_PASSWORD", SecretStr(""))
 
         return "{scheme}://{user}:{password}@{host}:{port}/{db}".format(
             scheme="postgresql+asyncpg",
-            user=values.get("DB_POSTGRES_USENRAME"),
+            user=values.get("POSTGRES_USER"),
             password=password.get_secret_value(),
-            host=values.get("DB_POSTGRES_HOST"),
-            port=values.get("DB_POSTGRES_PORT"),
-            db=values.get("DB_POSTGRES_SCHEMA"),
+            host=values.get("POSTGRES_HOST"),
+            port=values.get("POSTGRES_PORT"),
+            db=values.get("POSTGRES_DB"),
         )
 
     class Config:
