@@ -3,7 +3,7 @@ resource "aws_db_instance" "captainoftheseas" {
   engine              = "postgres"
   engine_version      = "15.3"
   identifier          = format("%s-%s", var.project_name, terraform.workspace)
-  db_name             = format("%s-%s", var.project_name, terraform.workspace)
+  db_name             = format("%s%s", terraform.workspace, var.db_name)
   instance_class      = "db.t3.micro"
   skip_final_snapshot = true
   storage_encrypted   = false

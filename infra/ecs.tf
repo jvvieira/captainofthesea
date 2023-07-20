@@ -39,6 +39,11 @@ resource "aws_ecs_service" "ecs_service" {
     assign_public_ip = true
   }
   desired_count = 1
+
+  tags = {
+    project = var.project_name
+    env     = terraform.workspace
+  }
 }
 
 resource "aws_ecs_task_definition" "backend" {
@@ -66,4 +71,9 @@ resource "aws_ecs_task_definition" "backend" {
       }
     ]
   DEFINITION
+
+  tags = {
+    project = var.project_name
+    env     = terraform.workspace
+  }
 }
