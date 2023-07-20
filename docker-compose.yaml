@@ -35,8 +35,6 @@ services:
       context: ./backend/
     env_file:
       - .env
-    volumes:
-      - ./backend/app/:/backend/app
     expose:
       - 8000
     ports:

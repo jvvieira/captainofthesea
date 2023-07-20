@@ -1,14 +1,16 @@
 name: Deploy new docker image
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: workflow_dispatch
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: pip install poetry
+      - name: Set up env file
+        run: python scripts/setup_env.py prod
+        shell: sh
