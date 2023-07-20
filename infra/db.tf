@@ -1,16 +1,8 @@
-data "aws_secretsmanager_secret" "secrets" {
-  arn = "arn:aws:secretsmanager:us-east-1:798616997032:secret:db_credentials-itNIU7"
-}
-
-data "aws_secretsmanager_secret_version" "current" {
-  secret_id = data.aws_secretsmanager_secret.secrets.id
-}
-
 resource "aws_db_instance" "captainoftheseas" {
   allocated_storage   = 20
   engine              = "postgres"
   engine_version      = "15.3"
-  identifier          = "captainoftheseas"
+  identifier          = format("%s-%s", var.project_name, terraform.workspace)
   instance_class      = "db.t3.micro"
   skip_final_snapshot = true
   storage_encrypted   = false
@@ -21,6 +13,7 @@ resource "aws_db_instance" "captainoftheseas" {
   password = jsondecode(data.aws_secretsmanager_secret_version.current.secret_string)["password"]
   username = jsondecode(data.aws_secretsmanager_secret_version.current.secret_string)["username"]
   tags = {
-    project = "captainofthesea"
+    project = var.project_name
+    env = terraform.workspace
   }
 }
