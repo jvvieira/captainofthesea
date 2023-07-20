@@ -5,8 +5,8 @@
     - Python + FastAPI
 
 - Backend:
-    IaC: Terraform
-    Cloud: AWS
+    - IaC: Terraform
+    - Cloud: AWS
         - Services
             Postgres RDS
             AWS ECR
@@ -29,3 +29,31 @@
     ```
     docker compose up
     ```
+
+### Project Deploy
+
+#### Infrascructure
+Run the following steps
+
+- Login into AWS
+    aws configure
+- Create the workspace
+    cd infra
+    terraform workspace new prod
+- Update resources
+    terraform apply
+
+#### Backend
+Run the following steps
+
+- Create the env files
+    cd backend
+    poetry shell
+    python ../scripts/setup_env.py prod
+- Update the database
+    alembic upgrade head
+- Deploy a new Docker version
+    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 798616997032.dkr.ecr.us-east-1.amazonaws.com
+    docker build -t captain-of-the-sea-backend-prod .
+    docker tag captain-of-the-sea-backend-prod:latest 798616997032.dkr.ecr.us-east-1.amazonaws.com/captain-of-the-sea-backend-prod:latest
+    docker push 798616997032.dkr.ecr.us-east-1.amazonaws.com/captain-of-the-sea-backend-prod:latest
