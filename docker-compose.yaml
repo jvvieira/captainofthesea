@@ -33,8 +33,6 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./backend/
-    env_file:
-      - .env
     expose:
       - 8000
     ports:

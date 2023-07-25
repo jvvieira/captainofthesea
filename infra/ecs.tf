@@ -40,18 +40,14 @@ resource "aws_ecs_cluster_capacity_providers" "spot" {
     weight            = 100
     capacity_provider = "FARGATE_SPOT"
   }
-
-  tags = {
-    project = var.project_name
-    env     = terraform.workspace
-  }
 }
 
 
 resource "aws_ecs_service" "ecs_service" {
-  name            = format("%s-backend", var.project_name)
-  cluster         = aws_ecs_cluster.cluster.id
-  task_definition = aws_ecs_task_definition.backend.arn
+  name                 = format("%s-backend-%s", var.project_name, terraform.workspace)
+  cluster              = aws_ecs_cluster.cluster.id
+  task_definition      = aws_ecs_task_definition.backend.arn
+  force_new_deployment = true
 
   capacity_provider_strategy {
     capacity_provider = "FARGATE_SPOT"
@@ -60,6 +56,7 @@ resource "aws_ecs_service" "ecs_service" {
 
   network_configuration {
     subnets          = [for s in data.aws_subnet.subnet : s.id]
+    security_groups  = [data.aws_security_group.default_security_group.id]
     assign_public_ip = true
   }
 
@@ -75,7 +72,8 @@ resource "aws_ecs_service" "ecs_service" {
 data "template_file" "container_definitions" {
   template = file("./task-definitions/backend.tpl")
   vars = {
-    "ecr_url" : aws_ecr_repository.backend.repository_url
+    "ecr_url" : format("%s:latest", aws_ecr_repository.backend.repository_url),
+    "container_name" : var.db_name
   }
 }
 

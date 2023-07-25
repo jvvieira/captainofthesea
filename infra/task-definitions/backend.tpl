@@ -1,11 +1,10 @@
 [
     {
-      "name" : "backend",
+      "name" : "${container_name}",
       "image" : "${ecr_url}",
       "memory" : 1024,
       "cpu" : 512,
       "essential" : true,
-      "entryPoint" : ["/"],
       "portMappings" : [
         {
           "containerPort" : 8000,

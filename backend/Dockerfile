@@ -5,7 +5,9 @@ WORKDIR /backend/
 
 # Copy poetry.lock* in case it doesn't exist in the repo
 COPY ./pyproject.toml ./poetry.lock ./.env /backend/
+
 COPY /app/ /backend/app/
+
 
 ENV PYTHONPATH=${PYTHONPATH}:${PWD}
 
