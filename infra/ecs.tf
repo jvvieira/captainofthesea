@@ -40,6 +40,11 @@ resource "aws_ecs_cluster_capacity_providers" "spot" {
     weight            = 100
     capacity_provider = "FARGATE_SPOT"
   }
+
+  tags = {
+    project = var.project_name
+    env     = terraform.workspace
+  }
 }
 
 
@@ -50,7 +55,7 @@ resource "aws_ecs_service" "ecs_service" {
 
   capacity_provider_strategy {
     capacity_provider = "FARGATE_SPOT"
-    weight = 1
+    weight            = 1
   }
 
   network_configuration {
@@ -70,7 +75,7 @@ resource "aws_ecs_service" "ecs_service" {
 data "template_file" "container_definitions" {
   template = file("./task-definitions/backend.tpl")
   vars = {
-    "ecr_url": aws_ecr_repository.backend.repository_url
+    "ecr_url" : aws_ecr_repository.backend.repository_url
   }
 }
 
@@ -80,7 +85,7 @@ resource "aws_ecs_task_definition" "backend" {
   requires_compatibilities = ["FARGATE"]
   memory                   = "1024"
   cpu                      = "512"
-  execution_role_arn       = "arn:aws:iam::798616997032:role/ECSExecutionRole"
+  execution_role_arn       = aws_iam_role.ecs_execution_role.arn
   container_definitions    = data.template_file.container_definitions.rendered
 
   tags = {

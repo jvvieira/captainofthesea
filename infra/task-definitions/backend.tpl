@@ -1,7 +1,7 @@
 [
     {
       "name" : "backend",
-      "image" : "ecr_url",
+      "image" : "${ecr_url}",
       "memory" : 1024,
       "cpu" : 512,
       "essential" : true,
