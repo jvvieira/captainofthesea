@@ -55,9 +55,8 @@ resource "aws_ecs_service" "ecs_service" {
   }
 
   network_configuration {
-    subnets          = [for s in data.aws_subnet.subnet : s.id]
-    security_groups  = [data.aws_security_group.default_security_group.id]
-    assign_public_ip = true
+    subnets         = aws_subnet.private_subnets[*].id
+    security_groups = [aws_security_group.main.id]
   }
 
   desired_count = 1
