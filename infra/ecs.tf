@@ -29,20 +29,50 @@ resource "aws_ecs_cluster" "cluster" {
   }
 }
 
-resource "aws_ecs_service" "ecs_service" {
-  name            = format("%s-backend", var.project_name)
-  cluster         = aws_ecs_cluster.cluster.id
-  task_definition = aws_ecs_task_definition.backend.arn
-  launch_type     = "FARGATE"
-  network_configuration {
-    subnets          = [for s in data.aws_subnet.subnet : s.id]
-    assign_public_ip = true
+
+resource "aws_ecs_cluster_capacity_providers" "spot" {
+  cluster_name = aws_ecs_cluster.cluster.name
+
+  capacity_providers = ["FARGATE_SPOT", "FARGATE"]
+
+  default_capacity_provider_strategy {
+    base              = 1
+    weight            = 100
+    capacity_provider = "FARGATE_SPOT"
   }
+}
+
+
+resource "aws_ecs_service" "ecs_service" {
+  name                 = format("%s-backend-%s", var.project_name, terraform.workspace)
+  cluster              = aws_ecs_cluster.cluster.id
+  task_definition      = aws_ecs_task_definition.backend.arn
+  force_new_deployment = true
+
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE_SPOT"
+    weight            = 1
+  }
+
+  network_configuration {
+    subnets         = aws_subnet.private_subnets[*].id
+    security_groups = [aws_security_group.main.id]
+  }
+
   desired_count = 1
 
   tags = {
     project = var.project_name
     env     = terraform.workspace
+  }
+}
+
+
+data "template_file" "container_definitions" {
+  template = file("./task-definitions/backend.tpl")
+  vars = {
+    "ecr_url" : format("%s:latest", aws_ecr_repository.backend.repository_url),
+    "container_name" : var.db_name
   }
 }
 
@@ -52,25 +82,8 @@ resource "aws_ecs_task_definition" "backend" {
   requires_compatibilities = ["FARGATE"]
   memory                   = "1024"
   cpu                      = "512"
-  execution_role_arn       = "arn:aws:iam::798616997032:role/ECSExecutionRole"
-  container_definitions    = <<DEFINITION
-    [
-      {
-        "name" : "backend",
-        "image" : "${aws_ecr_repository.backend.repository_url}",
-        "memory" : 1024,
-        "cpu" : 512,
-        "essential" : true,
-        "entryPoint" : ["/"],
-        "portMappings" : [
-          {
-            "containerPort" : 8000,
-            "hostPort" : 8000
-          }
-        ]
-      }
-    ]
-  DEFINITION
+  execution_role_arn       = aws_iam_role.ecs_execution_role.arn
+  container_definitions    = data.template_file.container_definitions.rendered
 
   tags = {
     project = var.project_name

@@ -1,14 +1,13 @@
+variable "AWS_REGION" {
+  default = "us-east-1"
+}
+
 variable "project_name" {
-    type= string
-    default = "captain-of-the-sea"
+  type    = string
+  default = "captain-of-the-sea"
 }
 
 variable "db_name" {
-    type= string
-    default = "captainofthesea"
-}
-
-variable "vpc_id" {
-    type = string
-    default = "vpc-006462f4def998727"
+  type    = string
+  default = "captainofthesea"
 }
