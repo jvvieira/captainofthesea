@@ -44,6 +44,7 @@ resource "aws_subnet" "private_subnets" {
   availability_zone = element(var.azs, count.index)
 
   tags = {
+    project = var.project_name
     Name = "Private Subnet ${count.index + 1}"
   }
 }
@@ -67,6 +68,7 @@ resource "aws_route_table" "second_rt" {
   }
 
   tags = {
+    project = var.project_name
     Name = "2nd Route Table"
   }
 }

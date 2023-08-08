@@ -11,3 +11,8 @@ variable "db_name" {
   type    = string
   default = "captainofthesea"
 }
+
+variable "api_container_name" {
+  type    = string
+  default = "captainofthesea"
+}

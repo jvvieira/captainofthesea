@@ -59,6 +59,12 @@ resource "aws_ecs_service" "ecs_service" {
     security_groups = [aws_security_group.main.id]
   }
 
+  load_balancer {
+    target_group_arn = element(module.alb.target_group_arns, 0)
+    container_name   = var.api_container_name
+    container_port   = 8000
+  }
+
   desired_count = 1
 
   tags = {
@@ -72,7 +78,7 @@ data "template_file" "container_definitions" {
   template = file("./task-definitions/backend.tpl")
   vars = {
     "ecr_url" : format("%s:latest", aws_ecr_repository.backend.repository_url),
-    "container_name" : var.db_name
+    "container_name" : var.api_container_name
   }
 }
 
