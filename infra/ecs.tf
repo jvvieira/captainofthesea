@@ -40,7 +40,7 @@ resource "aws_ecs_cluster_capacity_providers" "spot" {
     weight            = 100
     capacity_provider = "FARGATE_SPOT"
   }
-}
+} 
 
 
 resource "aws_ecs_service" "ecs_service" {
