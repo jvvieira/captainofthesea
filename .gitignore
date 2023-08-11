@@ -1,5 +1,5 @@
-infra/.terraform.lock.hcl
-infra/.terraform
+infra-aws/.terraform.lock.hcl
+infra-aws/.terraform/*
 .env
 infra/terraform.tfstate
 infra/terraform.tfstate.backup

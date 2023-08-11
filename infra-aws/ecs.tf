@@ -40,7 +40,7 @@ resource "aws_ecs_cluster_capacity_providers" "spot" {
     weight            = 100
     capacity_provider = "FARGATE_SPOT"
   }
-} 
+}
 
 
 resource "aws_ecs_service" "ecs_service" {
@@ -56,7 +56,7 @@ resource "aws_ecs_service" "ecs_service" {
 
   network_configuration {
     subnets         = aws_subnet.private_subnets[*].id
-    security_groups = [aws_security_group.main.id]
+    security_groups = [aws_security_group.ecs_service.id]
   }
 
   load_balancer {

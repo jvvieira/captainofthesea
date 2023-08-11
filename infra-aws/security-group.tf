@@ -1,4 +1,4 @@
-resource "aws_security_group" "main" {
+resource "aws_security_group" "ecs_service" {
   name   = var.project_name
   vpc_id = aws_vpc.main.id
 

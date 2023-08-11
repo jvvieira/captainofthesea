@@ -70,3 +70,16 @@ Run the following steps
     docker tag captain-of-the-sea-backend-prod:latest 798616997032.dkr.ecr.us-east-1.amazonaws.com/captain-of-the-sea-backend-prod:latest
     docker push 798616997032.dkr.ecr.us-east-1.amazonaws.com/captain-of-the-sea-backend-prod:latest
     ```
+
+
+#### Errors
+-- Missing docker permission
+
+```
+sudo groupadd docker
+
+sudo usermod -aG docker $USER
+
+newgrp docker
+
+```
