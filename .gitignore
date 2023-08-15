@@ -1,9 +1,8 @@
-infra-aws/.terraform.lock.hcl
-infra-aws/.terraform/*
-.env
-infra/terraform.tfstate
-infra/terraform.tfstate.backup
-terraform.tfstate
+*/.terraform.lock.hcl
+*/.terraform/*
+*/terraform.tfstate.backup
+*/terraform.tfstate
 .python-version
 **__pycache__**
 .vscode/*
+.env
